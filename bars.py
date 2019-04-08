@@ -9,20 +9,20 @@ def load_data(filepath):
         return json_str['features']
 
 
-def get_biggest_bar(data):
-    biggest_bar = max(data, key=lambda x: x['properties']['Attributes']["SeatsCount"])
+def get_biggest_bar(bars):
+    biggest_bar = max(bars, key=lambda x: x['properties']['Attributes']["SeatsCount"])
     print('Самый большой бар')
     pretty_print_json(biggest_bar)
 
 
-def get_smallest_bar(data):
-    smallest_bar = min(data, key=lambda x: x['properties']['Attributes']["SeatsCount"])
+def get_smallest_bar(bars):
+    smallest_bar = min(bars, key=lambda x: x['properties']['Attributes']["SeatsCount"])
     print('Самый маленький бар:')
     pretty_print_json(smallest_bar)
 
 
-def get_closest_bar(data, longitude, latitude):
-    closest_bar = min(data, key=lambda x: haversine(longitude, latitude, *x['geometry']['coordinates']))
+def get_closest_bar(bars, longitude, latitude):
+    closest_bar = min(bars, key=lambda x: haversine(longitude, latitude, *x['geometry']['coordinates']))
     print('Ближайший бар:')
     pretty_print_json(closest_bar)
 

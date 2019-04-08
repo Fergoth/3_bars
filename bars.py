@@ -38,9 +38,9 @@ def haversine(lon1, lat1, lon2, lat2):
 
 
 def pretty_print_json(json_data):
-    address = json_data['properties']['Attributes']['Address']
-    name = json_data['properties']['Attributes']['Name']
-    print('Название бара: {} \nАдрес: {}\n'.format(name, address))
+    bar_address = json_data['properties']['Attributes']['Address']
+    bar_name = json_data['properties']['Attributes']['Name']
+    print('Название бара: {} \nАдрес: {}\n'.format(bar_name, bar_address))
 
 
 if __name__ == '__main__':

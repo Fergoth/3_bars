@@ -46,20 +46,17 @@ if __name__ == '__main__':
     try:
         path = sys.argv[1]
         json_data = load_data(path)
+        print('Введите текущие координаты через пробел')
+        lon, lat = map(float, input().split())
     except IndexError:
         print('Требуется путь к файлу как аргумент')
     except FileNotFoundError:
         print('Файл не найден')
     except json.decoder.JSONDecodeError:
         print('Файл содержит данные не в формате json')
+    except ValueError:
+        print('Введите два числа в формате float через пробел \n Например 37.454 32.4353')
     else:
-
-        while 1:
-            print('Введите текущие координаты через пробел')
-            try:
-                lon, lat = map(float, input().split())
-            except ValueError:
-                print('Введите два числа в формате float через пробел \n Например 37.454 32.4353')
         print('Ближайший бар:')
         print_bar(get_closest_bar(json_data, lon, lat))
         print('Самый большой бар:')

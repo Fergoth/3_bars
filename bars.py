@@ -13,6 +13,7 @@ def load_data(filepath):
     except json.decoder.JSONDecodeError:
         print('Файл содержит данные не в формате json')
 
+
 def get_biggest_bar(bars):
     biggest_bar = max(bars, key=lambda x: x['properties']['Attributes']['SeatsCount'])
     return biggest_bar
@@ -45,6 +46,18 @@ def print_bar(bar):
     print('Название бара: {} \nАдрес: {}\n'.format(bar_name, bar_address))
 
 
+def input_coord():
+    while 1:
+        print('Введите текущие координаты через пробел')
+        try:
+            lon, lat = map(float, input().split())
+        except ValueError:
+            print('Введите два числа в формате float через пробел \n Например 37.454 32.4353')
+        else:
+            break
+    return lon, lat
+
+
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
@@ -53,14 +66,7 @@ if __name__ == '__main__':
         sys.exit(0)
     json_data = load_data(path)
     if json_data:
-        while 1:
-            print('Введите текущие координаты через пробел')
-            try:
-                lon, lat = map(float, input().split())
-            except ValueError:
-                print('Введите два числа в формате float через пробел \n Например 37.454 32.4353')
-            else:
-                break
+        lon, lat = input_coord()
         print('Ближайший бар:')
         print_bar(get_closest_bar(json_data, lon, lat))
         print('Самый большой бар:')

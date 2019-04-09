@@ -4,30 +4,29 @@ from math import radians, cos, sin, asin, sqrt
 
 
 def load_data(filepath):
-    with open(filepath, encoding='utf-8') as f:
-        json_str = json.load(f)
-        return json_str['features']
+    with open(filepath, encoding='utf-8') as file:
+        data_from_file = json.load(file)
+        return data_from_file['features']
 
 
 def get_biggest_bar(bars):
-    biggest_bar = max(bars, key=lambda x: x['properties']['Attributes']["SeatsCount"])
+    biggest_bar = max(bars, key=lambda x: x['properties']['Attributes']['SeatsCount'])
     print('Самый большой бар')
-    pretty_print_json(biggest_bar)
+    print_bar(biggest_bar)
 
 
 def get_smallest_bar(bars):
-    smallest_bar = min(bars, key=lambda x: x['properties']['Attributes']["SeatsCount"])
-    print('Самый маленький бар:')
-    pretty_print_json(smallest_bar)
+    smallest_bar = min(bars, key=lambda x: x['properties']['Attributes']['SeatsCount'])
+    return smallest_bar
 
 
 def get_closest_bar(bars, longitude, latitude):
-    closest_bar = min(bars, key=lambda x: haversine(longitude, latitude, *x['geometry']['coordinates']))
-    print('Ближайший бар:')
-    pretty_print_json(closest_bar)
+    closest_bar = min(bars, key=lambda x: get_distance(longitude, latitude, *x['geometry']['coordinates']))
+    return closest_bar
 
 
-def haversine(lon1, lat1, lon2, lat2):
+# https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+def get_distance(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
     dlon = lon2 - lon1
     dlat = lat2 - lat1
@@ -37,7 +36,7 @@ def haversine(lon1, lat1, lon2, lat2):
     return km
 
 
-def pretty_print_json(json_data):
+def print_bar(json_data):
     bar_address = json_data['properties']['Attributes']['Address']
     bar_name = json_data['properties']['Attributes']['Name']
     print('Название бара: {} \nАдрес: {}\n'.format(bar_name, bar_address))
@@ -46,11 +45,24 @@ def pretty_print_json(json_data):
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
+        json_data = load_data(path)
     except IndexError:
-        path = 'bars.json'
-    json_data = load_data(path)
-    print('Введите текущие координаты через пробел')
-    lon, lat = map(float, input().split())
-    get_closest_bar(json_data, lon, lat)
-    get_biggest_bar(json_data)
-    get_smallest_bar(json_data)
+        print('Требуется путь к файлу как аргумент')
+    except FileNotFoundError:
+        print('Файл не найден')
+    except json.decoder.JSONDecodeError:
+        print('Файл содержит данные не в формате json')
+    else:
+
+        while 1:
+            print('Введите текущие координаты через пробел')
+            try:
+                lon, lat = map(float, input().split())
+            except ValueError:
+                print('Введите два числа в формате float через пробел \n Например 37.454 32.4353')
+        print('Ближайший бар:')
+        print_bar(get_closest_bar(json_data, lon, lat))
+        print('Самый большой бар:')
+        print_bar(get_biggest_bar(json_data))
+        print('Самый маленький бар:')
+        print_bar(get_smallest_bar(json_data))

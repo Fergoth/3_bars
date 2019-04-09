@@ -36,9 +36,9 @@ def get_distance(lon1, lat1, lon2, lat2):
     return km
 
 
-def print_bar(json_data):
-    bar_address = json_data['properties']['Attributes']['Address']
-    bar_name = json_data['properties']['Attributes']['Name']
+def print_bar(bar):
+    bar_address = bar['properties']['Attributes']['Address']
+    bar_name = bar['properties']['Attributes']['Name']
     print('Название бара: {} \nАдрес: {}\n'.format(bar_name, bar_address))
 
 

@@ -3,11 +3,13 @@ import sys
 from math import radians, cos, sin, asin, sqrt
 
 
-def load_data(filepath):
-    with open(filepath, encoding='utf-8') as file:
-        bars = json.load(file)
-        return bars['features']
-
+def load_bars_from_file(filepath):
+    try:
+        with open(filepath, encoding='utf-8') as file:
+            bars = json.load(file)
+            return bars['features']
+    except:
+        return None
 
 def get_biggest_bar(bars):
     biggest_bar = max(
@@ -79,17 +81,14 @@ def print_bars(smallest,biggest,closest):
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
-        data_from_file = load_data(path)
     except IndexError:
         sys.exit('Требуется путь к файлу как аргумент')
-    except FileNotFoundError:
-        sys.exit('Файл не найден')
-    except json.decoder.JSONDecodeError:
-        sys.exit('Файл содержит данные не в формате json')
+    bars = load_bars_from_file(path)
     coords = input_coord()
-    if coords:
-        closest_bar = get_closest_bar(data_from_file, *coords)
-        biggest_bar = get_biggest_bar(data_from_file)
-        smallest_bar = (get_smallest_bar(data_from_file))
+    if coords and bars:
+        closest_bar = get_closest_bar(bars, *coords)
+        biggest_bar = get_biggest_bar(bars)
+        smallest_bar = (get_smallest_bar(bars))
         print_bars(smallest_bar,biggest_bar,closest_bar)
-
+    else:
+        print('Ошибка чтения файла')

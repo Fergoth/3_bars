@@ -58,6 +58,15 @@ def input_coord():
     return lon, lat
 
 
+def print_bars(smallest,biggest,closest):
+    print('Ближайший бар:')
+    print_bar(closest)
+    print('Самый большой бар:')
+    print_bar(biggest)
+    print('Самый маленький бар:')
+    print_bar(smallest)
+
+
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
@@ -69,9 +78,7 @@ if __name__ == '__main__':
     except json.decoder.JSONDecodeError:
         sys.exit('Файл содержит данные не в формате json')
     lon, lat = input_coord()
-    print('Ближайший бар:')
-    print_bar(get_closest_bar(data_from_file, lon, lat))
-    print('Самый большой бар:')
-    print_bar(get_biggest_bar(data_from_file))
-    print('Самый маленький бар:')
-    print_bar(get_smallest_bar(data_from_file))
+    closest_bar = get_closest_bar(data_from_file, lon, lat)
+    biggest_bar = get_biggest_bar(data_from_file)
+    smallest_bar = (get_smallest_bar(data_from_file))
+    print_bars(smallest_bar,biggest_bar,closest_bar)

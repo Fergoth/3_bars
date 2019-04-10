@@ -60,10 +60,11 @@ def input_coord():
     try:
         lon, lat = map(float, input().split())
     except ValueError:
-        sys.exit(
+        print(
             'Введите два числа в формате float через пробел \n'
             'Например 37.454 32.4353')
-    return lon, lat
+    else:
+        return lon, lat
 
 
 def print_bars(smallest,biggest,closest):
@@ -85,8 +86,10 @@ if __name__ == '__main__':
         sys.exit('Файл не найден')
     except json.decoder.JSONDecodeError:
         sys.exit('Файл содержит данные не в формате json')
-    lon, lat = input_coord()
-    closest_bar = get_closest_bar(data_from_file, lon, lat)
-    biggest_bar = get_biggest_bar(data_from_file)
-    smallest_bar = (get_smallest_bar(data_from_file))
-    print_bars(smallest_bar,biggest_bar,closest_bar)
+    coords = input_coord()
+    if coords:
+        closest_bar = get_closest_bar(data_from_file, *coords)
+        biggest_bar = get_biggest_bar(data_from_file)
+        smallest_bar = (get_smallest_bar(data_from_file))
+        print_bars(smallest_bar,biggest_bar,closest_bar)
+

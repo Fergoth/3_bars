@@ -8,8 +8,9 @@ def load_bars_from_file(filepath):
         with open(filepath, encoding='utf-8') as file:
             bars = json.load(file)
             return bars['features']
-    except:
+    except (FileNotFoundError, json.decoder.JSONDecodeError):
         return None
+
 
 def get_biggest_bar(bars):
     biggest_bar = max(

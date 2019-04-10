@@ -54,7 +54,7 @@ def input_coord():
     try:
         lon, lat = map(float, input().split())
     except ValueError:
-        print(
+        sys.exit(
             'Введите два числа в формате float через пробел \n'
             'Например 37.454 32.4353')
     return lon, lat

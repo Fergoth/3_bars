@@ -5,8 +5,8 @@ from math import radians, cos, sin, asin, sqrt
 
 def load_data(filepath):
     with open(filepath, encoding='utf-8') as file:
-        data_from_file = json.load(file)
-        return data_from_file['features']
+        bars = json.load(file)
+        return bars['features']
 
 
 def get_biggest_bar(bars):

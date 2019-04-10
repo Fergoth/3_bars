@@ -61,10 +61,9 @@ def input_coord():
 if __name__ == '__main__':
     try:
         path = sys.argv[1]
+        data_from_file = load_data(path)
     except IndexError:
         sys.exit('Требуется путь к файлу как аргумент')
-    try:
-        data_from_file = load_data(path)
     except FileNotFoundError:
         sys.exit('Файл не найден')
     except json.decoder.JSONDecodeError:
